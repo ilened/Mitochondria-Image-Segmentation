@@ -61,7 +61,7 @@ Table 1: Varying the Parameters of Sobel Method
 | B_FF<sub>3</sub> , P<sub>2</sub>        | 0.0497        | 0.0851              | 
 | B_FF<sub>3</sub> , P<sub>3</sub>        | 0.0497        | 0.0844              | 
 
-### *Tuning*
+### *Problems Encountered*
 Because the mitochondria objects were so similar in color with the rest of the image, it was very difficult to distinguish the difference of the two. When playing with the contrast of the edges, the sobel method would capture too much of the image and sometimes it would not capture enough of the image. Also, when filling the interior gaps, the imfill() method would fill too many unimportant objects and cause the resulting image to be too messy and inaccurate.
 
 ### Canny Edge Detection
@@ -133,21 +133,73 @@ Gaussian Filter = GF {2,2.5,3}
 
 Table 3: Varying the Parameters of K-Means Clustering
 
-| Parameters Varied                     | Average Error | Average Runtime(s)  |
-| ------------------------------------- | ------------- | ------------------- | 
-| S<sub>1</sub> , FF<sub>1</sub>        | 0.8692        | 0.2106              | 
-| S<sub>1</sub> , FF<sub>2</sub>        | 0.8692        | 0.1785              | 
-| S<sub>1</sub> , FF<sub>3</sub>        | 0.1353        | 0.1440              | 
-| S<sub>2</sub> , FF<sub>1</sub>        | 0.8349        | 0.1858              | 
-| S<sub>2</sub> , FF<sub>2</sub>        | 0.3668        | 0.1748              | 
-| S<sub>2</sub> , FF<sub>3</sub>        | 0.0972        | 0.1972              | 
-| S<sub>3</sub> , FF<sub>1</sub>        | 0.8092        | 0.2044              | 
-| S<sub>3</sub> , FF<sub>2</sub>        | 0.3063        | 0.1714              | 
-| S<sub>3</sub> , FF<sub>3</sub>        | 0.0882        | 0.1666              | 
+| Parameters Varied                      | Average Error | Average Runtime(s)  |
+| -------------------------------------- | ------------- | ------------------- | 
+| CS<sub>1</sub> , GF<sub>1</sub>        | 0.1010        | 16.1508             | 
+| CS<sub>1</sub> , GF<sub>2</sub>        | 0.1043        | 17.6623             | 
+| CS<sub>1</sub> , GF<sub>3</sub>        | 0.1225        | 15.7551             | 
+| CS<sub>2</sub> , GF<sub>1</sub>        | 0.0933        | 17.8764             | 
+| CS<sub>2</sub> , GF<sub>2</sub>        | 0.0810        | 16.3275             | 
+| CS<sub>2</sub> , GF<sub>3</sub>        | 0.0771        | 15.5172             | 
+| CS<sub>3</sub> , GF<sub>1</sub>        | 0.1039        | 17.0891             | 
+| CS<sub>3</sub> , GF<sub>2</sub>        | 0.1042        | 18.3952             | 
+| CS<sub>3</sub> , GF<sub>3</sub>        | 0.1173        | 17.6406             | 
+
+### *Problems Encountered*
+In developing the finished product of our K-means clustering, we encountered various issues. The main issue was finding a way to turn the clusters, which are in RGB colors into a binary segmented image. A big problem was that the colors chosen for the clusters were not in the same order every time in the image. I spent countless hours testing different approaches to this issue and arrived at a solution that did not work all the time but retrieved the segmentation from the clustering most of the time. Otherwise, it would return the other clusters that did not include the mitochondria, which contributed to a worsened error rate. We assume that the smallest histogram bin contains the cluster with the mitochondria, but since the segmented image is 3 layers, it is not easy to remove the layer that contains the cluster we want since the clusters change colors with each run arbitrarily. 
+
+## Validation
+Our algorithm returns a segmented image that we in turn compare computationally with a corresponding ground truth segmented image. To compute the error, we used the L1 norm in which we take the absolute difference of each image’s corresponding pixels (valued at 0 or 1 for black or white respectively) and then take the average.
+
+To validate our algorithms, we continuously tuned different parameters and ran our algorithms on a smaller validation set of 20 images. These images come from a larger training data set, but some of our algorithms were rather slower, so we kept the validation set we ultimately used smaller. Table 4 shows the preliminary results. K-means is clearly slower, and it has worse error than Canny edge detection. So far, Canny seems to be the better method. We did not remove it from the running for best algorithm just yet, since our test data set could reveal different results than anticipated.
+
+Table 4: Validation Preliminary Results 
+
+| Method                | Average Runtime per Segmentation(s) | Average L<sub>1</sub> Error  |
+| --------------------- | ----------------------------------- | ---------------------------- | 
+| Sobel Edge Detection  | 0.0926                              | 0.0505                       | 
+| Canny Edge Detection  | 0.1666                              | 0.0882                       |
+| K-means Clustering    | 15.7237                             | 0.1043                       |
+
+## Results
+Once we finished tuning our parameters on our validation data set, we applied our algorithms on our testing set that we had previously set aside. Our testing set consists of 165 images. 
+We achieved the following results:
 
 
+Table 5: Results
 
+| Method                | Average Runtime per Segmentation(s) | Average L<sub>1</sub> Error  |
+| --------------------- | ----------------------------------- | ---------------------------- | 
+| Sobel Edge Detection  | 0.064                               | 0.0632                       | 
+| Canny Edge Detection  | 0.1402                              | 0.1187                       |
+| K-means Clustering    | 14.629                              | 0.0746                       |
 
+Interestingly, we produced results that were contrary to our initial validation findings. While earlier K-means was not as good of a segmenter, here it almost took the lead in error rate. Canny edge detection was a good candidate for image segmentation. It produced a relatively low error rate. The method was also quite fast. K-means clustering was another good candidate for image segmentation. However, our implementation was much slower. 
+
+Sobel edge detection had both a lower average run time and average error. Though this may seem like Sobel is the best algorithm for image segmentation, it is important to understand that the error detection comes from the absolute difference. Since Sobel removes more white spots, it might also be removing important identified objects and thus it seems like less error. Quantitatively, Sobel is better. But qualitatively, when looking for segmented mitochondria, Sobel is worse, considering that the removal of important objects defeats the purpose of image segmentation.
+
+With these results, we would use canny or sobel over k-means if we were pressed for time, but not looking for more accurate results. K-means produced a better error rate but was slow.
+
+### *Sample Images from the Best Test Results*
+![](./images/Figure2.png)
+
+## Discussion, Conclusions, and Future Work
+For this project, our group embarked on a challenging journey. Through this process, we learned a lot about Matlab, image segmentation, edge detection, clustering, and more. We did not achieve the best results with the sobel and canny edge detection methods, but we are sure that it is due to the fact that our dataset does not work well with edge detection. The cells and mitochondria have too similar of edges. 
+
+Most of our time was spent reading documentation of these three algorithms. In hindsight, we wish that we had not spent so much time attempting to implement the best version of Sobel and Canny methods for our data set since ultimately, they did not work as well as we had hoped to detect only mitochondria. Canny did achieve low error rates, but not low enough to signify that it only segmented the mitochondria, and not the entire cell. Sobel had a low error rate, but did not detect enough mitochondria qualitatively for the algorithm to be deemed preferable. 
+
+With more time, we would explore alternative options for image segmentation using optimization techniques. We would also improve the K-means implementation since it is rather slow and further improve our error. It had a lot of promise to be a good image segmenter, but time constraints did not allow us to perfect the algorithm for the cell data set.
+
+## Bibliography
+“Canny Edge Detection.” Cascade Classification - OpenCV 2.4.13.7 Documentation, Open Source Computer Vision, 18 Dec. 2015, docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html.
+
+Canny, John. “A Computational Approach to Edge Detection.” IEEE Transactions on Pattern Analysis and Machine Intelligence , PAMI-8, no. 6, Nov. 1986, pp. 679–698., doi:10.1016/b978-0-08-051581-6.50024-6.
+
+“Electron Microscopy Dataset.” Computer Vision Laboratory CVLAB, Ecole Polytechnique Federale De Lausanne, cvlab.epfl.ch/data/data-em/.
+
+Gupta, Samta, and Susmita Ghosh Mazumdar. “Sobel Edge Detection Algorithm.” International Journal of Computer Science and Management Research, vol. 2, no. 2, Feb. 2013, pdfs.semanticscholar.org/6bca/fdf33445585966ee6fb3371dd1ce15241a62.pdf.
+
+Wagstaff, Kiri, et al. “Constrained K-Means Clustering with Background Knowledge.” Proceedings of the Eighteenth International Conference on Machine Learning, 2001, pp. 577–584., web.cse.msu.edu/~cse802/notes/ConstrainedKmeans.pdf.
 
 
 
