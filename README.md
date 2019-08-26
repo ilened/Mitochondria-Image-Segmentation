@@ -91,10 +91,11 @@ Remove small white specs smaller than 160 pixels using the bwareaopen(Image, 160
 ### *Tuning*
 We varied the following parameters and reported the resulting combination in Table 2.
 
-Sigma (S) {2, 2.5, 3} - for Gaussian Filter 
+Sigma (S) {2, 2.5, 3} - for Gaussian Filter   
 Fudge Factor (FF) {0.5, 1, 1.6} - to threshold in step 4 of our Canny method 
 
 Table 2: Varying the Parameters of Canny Method
+
 | Parameters Varied                     | Average Error | Average Runtime(s)  |
 | ------------------------------------- | ------------- | ------------------- | 
 | S<sub>1</sub> , FF<sub>1</sub>        | 0.8692        | 0.2106              | 
@@ -127,10 +128,11 @@ To implement this method in Matlab, we did the following:
 7) To convert the clustered RGB image into a binary segmented image, create a histogram with 4 bins and find the bin with the minimum amount of white pixels (we assume that the smaller cluster contains the mitochondria). From here, create the binary segmented image.
 
 ### *Tuning*
-Cluster Size = CS {2,3,4}
+Cluster Size = CS {2,3,4}  
 Gaussian Filter = GF {2,2.5,3}
 
 Table 3: Varying the Parameters of K-Means Clustering
+
 | Parameters Varied                     | Average Error | Average Runtime(s)  |
 | ------------------------------------- | ------------- | ------------------- | 
 | S<sub>1</sub> , FF<sub>1</sub>        | 0.8692        | 0.2106              | 
