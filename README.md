@@ -1,4 +1,4 @@
-# Mitochondria-Image-Segmentation
+# Mitochondrion Image Segmentation
 ## Introduction
 For our project, we learned about image segmentation through various methods readily available in the field. Matlab has a large Image Processing Toolbox filled with many tools and methods for use in image analysis. We chose three different methods to compare on one, central data set.
 
