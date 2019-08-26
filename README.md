@@ -17,4 +17,4 @@ We will compare these methods based on their ability to properly segment our dat
 
 ## Dataset
 For our data set, we used a Focused Ion Beam Scanning Electron Microscopy (FIB-SEM) image stack (“Electron Microscopy Dataset”). This dataset consists of cells and their mitochondria. We chose this dataset because segmenting cells and their parts is an important feat. Also, this dataset provides a challenge since the mitochondria are a similar color to the cell walls, and the cell walls are the same color as the mitochondria walls. Below is an example of an original image and its corresponding ground truth segmentation of its mitochondria.
-[]!(./images/Figure1.png)
+![](./images/Figure1.png)
