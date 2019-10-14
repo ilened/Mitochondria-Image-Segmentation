@@ -190,7 +190,7 @@ Most of our time was spent reading documentation of these three algorithms. In h
 
 With more time, we would explore alternative options for image segmentation using optimization techniques. We would also improve the K-means implementation since it is rather slow and further improve our error. It had a lot of promise to be a good image segmenter, but time constraints did not allow us to perfect the algorithm for the cell data set.
 
-## Bibliography
+## Works Cited
 “Canny Edge Detection.” Cascade Classification - OpenCV 2.4.13.7 Documentation, Open Source Computer Vision, 18 Dec. 2015, docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html.
 
 Canny, John. “A Computational Approach to Edge Detection.” IEEE Transactions on Pattern Analysis and Machine Intelligence , PAMI-8, no. 6, Nov. 1986, pp. 679–698., doi:10.1016/b978-0-08-051581-6.50024-6.
