@@ -41,7 +41,7 @@ C = labeloverlay(I,L2);
  
 [M, Index] = min(N); %M is smallest element. So Index is the bin number
  
-[width, height, ~] = size(C); %i think height was a 2d matrix on accident? 
+[width, height, ~] = size(C);  
   
 Final = zeros(width,height); %create the final image
  
